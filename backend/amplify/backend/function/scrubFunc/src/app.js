@@ -8,6 +8,7 @@ See the License for the specific language governing permissions and limitations 
 
 var express = require("express");
 var bodyParser = require("body-parser");
+var sharp = require("sharp");
 var awsServerlessExpressMiddleware = require(
   "aws-serverless-express/middleware",
 );
@@ -47,7 +48,7 @@ const isValidExtension = (ext) => {
     supportedTypes.has(lowerCaseExtWDot);
 };
 
-app.post("/api/v001/scrub", function (req, res) {
+app.post("/api/v001/scrub", async function (req, res) {
   // Get the data and the extension off
   // the body.
   const { data, ext } = req.body;
@@ -87,11 +88,36 @@ app.post("/api/v001/scrub", function (req, res) {
     return;
   }
 
+  // Make a buffer from that data.
+  // Then use that buffer to make a sharp.Image.
+  const buf = Buffer.from(data, "base64");
+  const image = sharp(buf);
+
+  // Convert the image back into a buffer.
+  let imgBuf = null;
+  let err = null;
+
+  try {
+    imgBuf = await image.toBuffer();
+  } catch (error) {
+    err = error;
+  }
+
+  // If not successful, bail.
+  if (err && !imgBuf) {
+    res.status(400).json({
+      "success": false,
+      "message": `unable to decode image`,
+      "data": "none",
+    });
+    return;
+  }
+
   // Send back a successful response.
   res.status(200).json({
     "success": true,
     "message": "image scrubbing finished successfully",
-    "data": data,
+    "data": imgBuf.toString("base64"),
   });
 });
 
