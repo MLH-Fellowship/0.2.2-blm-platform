@@ -28,8 +28,40 @@ app.use(function (req, res, next) {
 });
 
 app.post("/api/v001/scrub", function (req, res) {
-  // Add your code here
-  res.json({ success: "post call succeed!", url: req.url, body: req.body });
+  // Get the data and the extension off
+  // the body.
+  const { data, ext } = req.body;
+
+  // Ensure they're both defined.
+  if (data === undefined || ext === undefined) {
+    res.status(400).json({
+      "success": false,
+      "message": "missing required field",
+      "data": "none",
+    });
+    return;
+  }
+
+  // Validate the base64 payload.
+  //
+  // Source: https://stackoverflow.com/questions/475074/regex-to-parse-or-validate-base64-data
+  const regex =
+    /^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/;
+
+  if (!regex.test(data)) {
+    res.status(400).json({
+      "success": false,
+      "message": `invalid base64 data`,
+    });
+    return;
+  }
+
+  // Send back a successful response.
+  res.status(200).json({
+    "success": true,
+    "message": "image scrubbing finished successfully",
+    "data": data,
+  });
 });
 
 app.listen(3000, function () {
