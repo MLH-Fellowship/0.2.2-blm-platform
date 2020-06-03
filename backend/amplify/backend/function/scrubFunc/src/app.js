@@ -27,6 +27,26 @@ app.use(function (req, res, next) {
   next();
 });
 
+const isValidExtension = (ext) => {
+  const supportedTypes = new Set(
+    [
+      ".jpg",
+      ".jpeg",
+      ".jpe",
+      ".jif",
+      ".jfif",
+      ".jfi",
+      ".tif",
+      ".tiff",
+    ],
+  );
+  const lowerCaseExt = String(ext).toLowerCase();
+  const lowerCaseExtWDot = "." + lowerCaseExt;
+
+  return supportedTypes.has(lowerCaseExt) ||
+    supportedTypes.has(lowerCaseExtWDot);
+};
+
 app.post("/api/v001/scrub", function (req, res) {
   // Get the data and the extension off
   // the body.
@@ -52,6 +72,17 @@ app.post("/api/v001/scrub", function (req, res) {
     res.status(400).json({
       "success": false,
       "message": `invalid base64 data`,
+      "data": "none",
+    });
+    return;
+  }
+
+  // Verify that we have a supported image type.
+  if (!isValidExtension(ext)) {
+    res.status(400).json({
+      "success": false,
+      "message": `unsupported file type ${ext}`,
+      "data": "none",
     });
     return;
   }
