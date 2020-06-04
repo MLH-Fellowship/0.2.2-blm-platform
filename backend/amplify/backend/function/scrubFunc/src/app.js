@@ -101,6 +101,7 @@ app.post("/api/v001/scrub", async function (req, res) {
   const image = sharp(buf);
 
   // Convert the image back into a buffer.
+  // This essentially wipes out all metadata.
   let imgBuf = null;
   let err = null;
 
@@ -111,7 +112,7 @@ app.post("/api/v001/scrub", async function (req, res) {
   }
 
   // If not successful, bail.
-  if (err && !imgBuf) {
+  if (err || !imgBuf) {
     res.status(400).json({
       "success": false,
       "message": `unable to decode image`,
