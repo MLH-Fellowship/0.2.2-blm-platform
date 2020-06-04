@@ -55,9 +55,16 @@ app.post("/api/v001/scrub", async function (req, res) {
 
   // Ensure they're both defined.
   if (data === undefined || ext === undefined) {
+    let dataMissingStr = "missing required field(s):";
+    if (data === undefined) {
+      dataMissingStr += " data";
+    }
+    if (ext === undefined) {
+      dataMissingStr += " ext";
+    }
     res.status(400).json({
       "success": false,
-      "message": "missing required field",
+      "message": dataMissingStr,
       "data": "none",
     });
     return;
