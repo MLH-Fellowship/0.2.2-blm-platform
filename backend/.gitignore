@@ -16,3 +16,6 @@ amplifytools.xcconfig
 
 # IDE's
 .vscode
+
+# API keys
+client_secret.json
