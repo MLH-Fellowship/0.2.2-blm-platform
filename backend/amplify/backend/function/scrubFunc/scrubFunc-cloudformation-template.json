@@ -68,7 +68,7 @@
 				"Timeout": "25",
 				"Code": {
 					"S3Bucket": "amplify-backendscrub-dev-105706-deployment",
-					"S3Key": "amplify-builds/scrubFunc-742f2b624f3831666e4b-build.zip"
+					"S3Key": "amplify-builds/scrubFunc-5558625538356e713558-build.zip"
 				}
 			}
 		},
