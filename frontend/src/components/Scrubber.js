@@ -13,8 +13,7 @@ function Scrubber(props) {
   const [ img, setImg ] = useState(logo);
 
   const onImgUpload = async event => {
-    const dataURL = await toBase64(event.target.files[0]);
-    const b64 = dataURL.split(',')[1];
+    const b64 = await toBase64(event.target.files[0]);
     const url = "https://cors-anywhere.herokuapp.com/https://5pawt634b1.execute-api.us-west-2.amazonaws.com/dev/api/v001/scrub";
     const res = await axios.post(url, {
       "data": b64,
@@ -41,7 +40,7 @@ function Scrubber(props) {
             onChange={onImgUpload}
           />
         </Button>
-        <img style={{maxWidth: "500px", maxHeight: "500px"}} src={img} ></img>
+        <img style={{maxWidth: "500px", maxHeight: "500px", marginBottom: "10px"}} src={img} ></img>
       </div>
     </Container>
   );
@@ -50,7 +49,7 @@ function Scrubber(props) {
 const toBase64 = file => new Promise((resolve, reject) => {
   const reader = new FileReader();
   reader.readAsDataURL(file);
-  reader.onload = () => resolve(reader.result);
+  reader.onload = () => resolve(reader.result.split(',')[1]);
   reader.onerror = error => reject(error);
 });
 
