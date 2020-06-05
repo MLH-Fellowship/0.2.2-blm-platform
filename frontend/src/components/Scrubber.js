@@ -26,6 +26,7 @@ function Scrubber(props) {
     <Container component="main" maxWidth="sm">
       <div className={classes.container}>
         <Typography variant="h2" style={{marginTop: "15px"}}>Image Scrubber</Typography>
+        <Typography variant="body1" style={{marginTop: "15px", textAlign: "center"}}>People can use image metadata against you to track your whereabouts. Protect yourself by anonymizing your images.</Typography>
         <Button
           fullWidth
           variant="contained"
