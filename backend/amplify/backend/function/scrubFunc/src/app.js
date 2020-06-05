@@ -7,7 +7,10 @@ const awsServerlessExpressMiddleware = require(
 
 // declare a new express app
 const app = express();
-app.use(bodyParser.json());
+app.use(bodyParser.json({
+  limit: "50mb",
+}));
+
 app.use(awsServerlessExpressMiddleware.eventContext());
 
 // Enable CORS for all methods
