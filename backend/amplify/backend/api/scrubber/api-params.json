@@ -1,0 +1,34 @@
+{
+    "paths": [
+        {
+            "name": "/api/v001/scrub",
+            "lambdaFunction": "scrubFunc",
+            "privacy": {
+                "open": true
+            }
+        }
+    ],
+    "resourceName": "scrubber",
+    "apiName": "scrubber",
+    "functionArns": [
+        {
+            "lambdaFunction": "scrubFunc"
+        }
+    ],
+    "privacy": {
+        "auth": 0,
+        "unauth": 0,
+        "authRoleName": "amplify-backendscrub-dev-105706-authRole",
+        "unAuthRoleName": "amplify-backendscrub-dev-105706-unauthRole"
+    },
+    "dependsOn": [
+        {
+            "category": "function",
+            "resourceName": "scrubFunc",
+            "attributes": [
+                "Name",
+                "Arn"
+            ]
+        }
+    ]
+}
